@@ -27,8 +27,32 @@ public class ProductController {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
+    //Create a new Product
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+    	return productRepository.save(product);
+    }
     
+    //Update an existing Product
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable Long id, @RequestBody Product updateProduct) {
+    	Product product = productRepository.findById(id)
+    			.orElseThrow(() -> new RuntimeException("Product not found"));
+    	
+    	product.setName(updateProduct.getName());
+    	product.setDescription(updateProduct.getDescription());
+    	product.setPrice(updateProduct.getPrice());
+    	product.setStock(updateProduct.getStock());
+    	product.setImageUrl(updateProduct.getImageUrl());
+    	
+    	return productRepository.save(product);
+    }
     
+    //Delete a Product
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+    	productRepository.deleteById(id);
+    }
 }
 
 
