@@ -3,6 +3,7 @@ package com.ecommerce.controller;
 import com.ecommerce.model.Product;
 import com.ecommerce.repository.ProductRepository;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -29,13 +30,13 @@ public class ProductController {
 
     //Create a new Product
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
+    public Product createProduct(@Valid @RequestBody Product product) {
     	return productRepository.save(product);
     }
     
     //Update an existing Product
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product updateProduct) {
+    public Product updateProduct(@PathVariable Long id, @Valid @RequestBody Product updateProduct) {
     	Product product = productRepository.findById(id)
     			.orElseThrow(() -> new RuntimeException("Product not found"));
     	
