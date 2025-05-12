@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "orders")
@@ -15,6 +16,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Positive(message = "Total price must be greater than 0")
     private Double totalPrice;
 
     @ManyToOne
@@ -69,7 +71,3 @@ public class Order {
         this.orderItems = orderItems;
     }
 }
-
-
-
-

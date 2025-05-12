@@ -2,13 +2,13 @@ package com.ecommerce.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import jakarta.validation.constraints.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Min;
-
-
 
 
 @Entity
@@ -37,6 +37,13 @@ public class Product {
 
     @Column(name = "created_at", updatable = false, insertable = false)
     private LocalDateTime createdAt;
+    
+    //Modify the Product class to include a reference to Category
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties("products")
+    private Category category;
+
 
     // Empty constructor (required by JPA)
     public Product() {
@@ -109,5 +116,14 @@ public class Product {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+    
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
 }
 

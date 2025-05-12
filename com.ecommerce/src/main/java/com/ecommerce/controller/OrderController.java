@@ -10,6 +10,8 @@ import com.ecommerce.repository.OrderItemRepository;
 import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -35,7 +37,7 @@ public class OrderController {
     // Create an Order
     @PostMapping
     @Transactional
-    public Order createOrder(@RequestBody OrderRequest orderRequest) {
+    public Order createOrder(@Valid @RequestBody OrderRequest orderRequest) {
         // Find the user
         User user = userRepository.findById(orderRequest.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -75,6 +77,12 @@ public class OrderController {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
     }
+    
+    @GetMapping("/user/{userId}")
+    public List<Order> getOrdersByUser(@PathVariable Long userId) {
+        return orderRepository.findByUserId(userId);
+    }
+
 
     // Get all Orders
     @GetMapping

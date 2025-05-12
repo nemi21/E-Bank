@@ -1,8 +1,13 @@
 package com.ecommerce.controller;
 
+import com.ecommerce.dto.UserDTO;
 import com.ecommerce.model.User;
 import com.ecommerce.repository.UserRepository;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,11 +18,11 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-
-    // POST: Add a new user
+    
     @PostMapping
-    public User addUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public ResponseEntity<String> createUser(@RequestBody @Valid UserDTO userDTO) {
+        // Here you would call a service to handle user creation logic
+        return ResponseEntity.ok("User created: " + userDTO.getUsername());
     }
 
     // GET: Get all users
