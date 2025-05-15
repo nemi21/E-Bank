@@ -15,10 +15,20 @@ public class OrderRequestDTO {
     private List<OrderItemDTO> orderItems;
 
     // Getters and Setters
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    public Long getUserId() {
+        return userId;
+    }
 
-    public List<OrderItemDTO> getOrderItems() { return orderItems; }
-    public void setOrderItems(List<OrderItemDTO> orderItems) { this.orderItems = orderItems; }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public List<OrderItemDTO> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItemDTO> orderItems) {
+        this.orderItems = orderItems;
+    }
 }
 

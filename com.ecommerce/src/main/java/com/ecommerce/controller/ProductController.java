@@ -1,5 +1,6 @@
 package com.ecommerce.controller;
 
+import com.ecommerce.dto.ProductDTO;
 import com.ecommerce.model.Category;
 import com.ecommerce.model.Product;
 import com.ecommerce.repository.CategoryRepository;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -47,30 +49,47 @@ public class ProductController {
 
     //Create a new Product
     @PostMapping
-    public Product createProduct(@Valid @RequestBody Product product) {
-        Long categoryId = product.getCategory().getId(); // Extract category ID from request
-        Category category = categoryRepository.findById(categoryId)
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {
+        Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        product.setCategory(category); // Assign managed category to the product
-        return productRepository.save(product);
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setStock(productDTO.getStock());
+        product.setImageUrl(productDTO.getImageUrl());
+        product.setCategory(category);
+
+        Product savedProduct = productRepository.save(product);
+
+        return ResponseEntity.created(URI.create("/products/" + savedProduct.getId())).body(savedProduct);
     }
+
+
 
     
     //Update an existing Product
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @Valid @RequestBody Product updateProduct) {
-    	Product product = productRepository.findById(id)
-    			.orElseThrow(() -> new RuntimeException("Product not found"));
-    	
-    	product.setName(updateProduct.getName());
-    	product.setDescription(updateProduct.getDescription());
-    	product.setPrice(updateProduct.getPrice());
-    	product.setStock(updateProduct.getStock());
-    	product.setImageUrl(updateProduct.getImageUrl());
-    	
-    	return productRepository.save(product);
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setStock(productDTO.getStock());
+        product.setImageUrl(productDTO.getImageUrl());
+
+        if (productDTO.getCategoryId() != null) {
+            Category category = categoryRepository.findById(productDTO.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+            product.setCategory(category);
+        }
+
+        return ResponseEntity.ok(productRepository.save(product));
     }
+
     
     //Delete a Product
     @DeleteMapping("/{id}")

@@ -30,6 +30,13 @@ public class UserController {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+    
+ // Get User by ID
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
 }
 
 
