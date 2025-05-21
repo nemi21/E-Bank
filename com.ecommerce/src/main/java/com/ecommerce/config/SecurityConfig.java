@@ -11,20 +11,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .authorizeHttpRequests(authorize -> authorize
+            .csrf(csrf -> csrf.disable()) // 👈 disable CSRF
+            .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/swagger-ui/**",
                     "/v3/api-docs/**",
-                    "/swagger-ui.html"
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/swagger-resources/**",
+                    "/webjars/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
-            .formLogin()
-            .and()
-            .httpBasic();
+            .httpBasic(); // 👈 Optional: enables basic auth for all other endpoints
         return http.build();
     }
+    
+    
 }
-
 
