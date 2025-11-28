@@ -461,9 +461,9 @@ This is a personal portfolio project. However, feedback and suggestions are welc
 ## 👨‍💻 Author
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
+- GitHub: [nemi21] (https://github.com/nemi21/E-Bank.git)
+- LinkedIn: www.linkedin.com/in/nehemiah-gugssa-105920209
+- Email: nemigugssa10@gmail.com
 
 ---
 
