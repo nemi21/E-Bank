@@ -1,6 +1,9 @@
 package com.ecommerce.controller;
 
 import com.ecommerce.dto.ProductDTO;
+import com.ecommerce.service.ProductSearchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Operation;
 import com.ecommerce.model.Category;
 import com.ecommerce.model.Product;
 import com.ecommerce.repository.CategoryRepository;
@@ -16,7 +19,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-
+	
+	@Autowired
+	private ProductSearchService productSearchService;
+	
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
@@ -95,6 +101,40 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
     	productRepository.deleteById(id);
+    }
+    
+    @GetMapping("/search")
+    @Operation(summary = "Search products by keyword")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword) {
+        List<Product> products = productSearchService.quickSearch(keyword);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/filter")
+    @Operation(summary = "Advanced product search with filters")
+    public ResponseEntity<List<Product>> filterProducts(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false, defaultValue = "name") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sortOrder) {
+        
+        List<Product> products = productSearchService.searchProducts(
+            name, categoryId, minPrice, maxPrice, sortBy, sortOrder
+        );
+        
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/price-range")
+    @Operation(summary = "Get products by price range")
+    public ResponseEntity<List<Product>> getProductsByPriceRange(
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice) {
+        
+        List<Product> products = productSearchService.getProductsByPriceRange(minPrice, maxPrice);
+        return ResponseEntity.ok(products);
     }
      
 }
