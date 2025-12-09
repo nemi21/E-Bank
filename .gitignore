@@ -16,18 +16,17 @@ target/
 .classpath
 .project
 .settings/
+.factorypath
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# Application properties with sensitive data
+# Sensitive data
 application-prod.properties
+src/main/resources/application-prod.properties
 
 # Maven
 .mvn/
 mvnw
 mvnw.cmd
-
-# Spring Boot
-HELP.md
