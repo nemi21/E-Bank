@@ -1,5 +1,7 @@
 # E-Bank E-Commerce Platform - Backend
 
+> **🔗 Frontend Repository:** [E-Bank-Frontend](https://github.com/nemi21/E-Bank-Frontend)
+
 A production-ready e-commerce backend system with integrated digital wallet payment processing and JWT authentication, built with Spring Boot and MySQL.
 
 ![Java](https://img.shields.io/badge/Java-23-orange)
